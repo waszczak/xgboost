@@ -1,3 +1,23 @@
+AMG private repo notes
+----------
+* configuring public/upstream remotes (after checking out this repo)
+```sh
+git remote add upstream https://github.com/dmlc/xgboost.git
+git remote add public git@github.com:AnalyticsMediaGroup/xgboost.git
+```
+* update public master from upstream
+```sh
+git checkout master
+git pull upstream master
+git push public master
+```
+* update private master from upstream
+```sh
+git checkout master
+git pull upstream master
+```
+
+
 <img src=https://raw.githubusercontent.com/dmlc/dmlc.github.io/master/img/logo-m/xgboost.png width=135/>  eXtreme Gradient Boosting
 ===========
 [![Build Status](https://travis-ci.org/dmlc/xgboost.svg?branch=master)](https://travis-ci.org/dmlc/xgboost)
