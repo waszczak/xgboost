@@ -1,5 +1,9 @@
 AMG repo notes
 ----------
+* clone using recursive flag
+```sh
+git clone --recursive git@github.com:AnalyticsMediaGroup/xgboost.git
+```
 * configuring public/upstream remotes (after checking out this repo)
 ```sh
 git remote add upstream https://github.com/dmlc/xgboost.git
