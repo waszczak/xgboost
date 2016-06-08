@@ -1,20 +1,14 @@
-AMG private repo notes
+AMG repo notes
 ----------
 * configuring public/upstream remotes (after checking out this repo)
 ```sh
 git remote add upstream https://github.com/dmlc/xgboost.git
-git remote add public git@github.com:AnalyticsMediaGroup/xgboost.git
 ```
 * update public master from upstream
 ```sh
 git checkout master
 git pull upstream master
-git push public master
-```
-* update private master from upstream
-```sh
-git checkout master
-git pull upstream master
+git push
 ```
 
 
