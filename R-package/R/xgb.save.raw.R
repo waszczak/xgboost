@@ -21,7 +21,7 @@ xgb.save.raw <- function(model) {
     model <- model$handle
   }
   if (class(model) == "xgb.Booster.handle") {
-    raw <- .Call("XGBoosterModelToRaw_R", model, PACKAGE = "xgboost")
+    raw <- .Call("XGBoosterModelToRaw_R", model, PACKAGE = "xgboostAMG")
     return(raw)
   }
   stop("xgb.raw: the input must be xgb.Booster.handle. Use xgb.DMatrix.save to save

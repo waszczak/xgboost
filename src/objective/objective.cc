@@ -30,5 +30,6 @@ namespace obj {
 DMLC_REGISTRY_LINK_TAG(regression_obj);
 DMLC_REGISTRY_LINK_TAG(multiclass_obj);
 DMLC_REGISTRY_LINK_TAG(rank_obj);
+DMLC_REGISTRY_LINK_TAG(uplift_obj);
 }  // namespace obj
 }  // namespace xgboost

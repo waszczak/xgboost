@@ -21,14 +21,14 @@ xgb.DMatrix <- function(data, info = list(), missing = NA, ...) {
   cnames <- NULL
   if (typeof(data) == "character") {
     handle <- .Call("XGDMatrixCreateFromFile_R", data, as.integer(FALSE),
-                    PACKAGE = "xgboost")
+                    PACKAGE = "xgboostAMG")
   } else if (is.matrix(data)) {
     handle <- .Call("XGDMatrixCreateFromMat_R", data, missing,
-                    PACKAGE = "xgboost")
+                    PACKAGE = "xgboostAMG")
     cnames <- colnames(data)
   } else if (class(data) == "dgCMatrix") {
     handle <- .Call("XGDMatrixCreateFromCSC_R", data@p, data@i, data@x,
-                    PACKAGE = "xgboost")
+                    PACKAGE = "xgboostAMG")
     cnames <- colnames(data)
   } else {
     stop(paste("xgb.DMatrix: does not support to construct from ",
@@ -101,8 +101,8 @@ xgb.get.DMatrix <- function(data, label = NULL, missing = NA, weight = NULL) {
 #' 
 #' @export
 dim.xgb.DMatrix <- function(x) {
-  c(.Call("XGDMatrixNumRow_R", x, PACKAGE="xgboost"),
-    .Call("XGDMatrixNumCol_R", x, PACKAGE="xgboost"))
+  c(.Call("XGDMatrixNumRow_R", x, PACKAGE="xgboostAMG"),
+    .Call("XGDMatrixNumCol_R", x, PACKAGE="xgboostAMG"))
 }
 
 
@@ -195,7 +195,7 @@ getinfo.xgb.DMatrix <- function(object, name) {
     stop(paste("getinfo: unknown info name", name))
   }
   if (name != "nrow"){
-    ret <- .Call("XGDMatrixGetInfo_R", object, name, PACKAGE = "xgboost")
+    ret <- .Call("XGDMatrixGetInfo_R", object, name, PACKAGE = "xgboostAMG")
   } else {
     ret <- nrow(object)
   }
@@ -239,31 +239,31 @@ setinfo <- function(object, ...) UseMethod("setinfo")
 #' @export
 setinfo.xgb.DMatrix <- function(object, name, info) {
   if (name == "label") {
-    if (length(info) != nrow(object))
-      stop("The length of labels must equal to the number of rows in the input data")
+    if (length(info) != nrow(object) && (is.null(ncol(info)) || ncol(info) != nrow(object)))
+      stop("The length or columns of labels must equal to the number of rows in the input data")
     .Call("XGDMatrixSetInfo_R", object, name, as.numeric(info),
-          PACKAGE = "xgboost")
+          PACKAGE = "xgboostAMG")
     return(TRUE)
   }
   if (name == "weight") {
     if (length(info) != nrow(object))
       stop("The length of weights must equal to the number of rows in the input data")
     .Call("XGDMatrixSetInfo_R", object, name, as.numeric(info),
-          PACKAGE = "xgboost")
+          PACKAGE = "xgboostAMG")
     return(TRUE)
   }
   if (name == "base_margin") {
     # if (length(info)!=nrow(object))
     #   stop("The length of base margin must equal to the number of rows in the input data")
     .Call("XGDMatrixSetInfo_R", object, name, as.numeric(info),
-          PACKAGE = "xgboost")
+          PACKAGE = "xgboostAMG")
     return(TRUE)
   }
   if (name == "group") {
     if (sum(info) != nrow(object))
       stop("The sum of groups must equal to the number of rows in the input data")
     .Call("XGDMatrixSetInfo_R", object, name, as.integer(info),
-          PACKAGE = "xgboost")
+          PACKAGE = "xgboostAMG")
     return(TRUE)
   }
   stop(paste("setinfo: unknown info name", name))
@@ -303,7 +303,7 @@ slice.xgb.DMatrix <- function(object, idxset, ...) {
   if (class(object) != "xgb.DMatrix") {
     stop("slice: first argument dtrain must be xgb.DMatrix")
   }
-  ret <- .Call("XGDMatrixSliceDMatrix_R", object, idxset, PACKAGE = "xgboost")
+  ret <- .Call("XGDMatrixSliceDMatrix_R", object, idxset, PACKAGE = "xgboostAMG")
 
   attr_list <- attributes(object)
   nr <- nrow(object)

@@ -49,7 +49,7 @@ xgb.dump <- function(model = NULL, fname = NULL, fmap = "", with.stats=FALSE) {
     stop("fmap: argument must be type character (when provided)")
   }
 
-  longString <- .Call("XGBoosterDumpModel_R", model$handle, fmap, as.integer(with.stats), PACKAGE = "xgboost")
+  longString <- .Call("XGBoosterDumpModel_R", model$handle, fmap, as.integer(with.stats), PACKAGE = "xgboostAMG")
 
   dt <- fread(paste(longString, collapse = ""), sep = "\n", header = F)
 

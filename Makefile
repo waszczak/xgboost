@@ -154,34 +154,34 @@ pypack: ${XGBOOST_DYLIB}
 # Script to make a clean installable R package.
 Rpack:
 	$(MAKE) clean_all
-	rm -rf xgboost xgboost*.tar.gz
-	cp -r R-package xgboost
-	rm -rf xgboost/src/*.o xgboost/src/*.so xgboost/src/*.dll
-	rm -rf xgboost/src/*/*.o
-	rm -rf xgboost/demo/*.model xgboost/demo/*.buffer xgboost/demo/*.txt
-	rm -rf xgboost/demo/runall.R
-	cp -r src xgboost/src/src
-	cp -r include xgboost/src/include
-	cp -r amalgamation xgboost/src/amalgamation
-	mkdir -p xgboost/src/rabit
-	cp -r rabit/include xgboost/src/rabit/include
-	cp -r rabit/src xgboost/src/rabit/src
-	rm -rf xgboost/src/rabit/src/*.o
-	mkdir -p xgboost/src/dmlc-core
-	cp -r dmlc-core/include xgboost/src/dmlc-core/include
-	cp -r dmlc-core/src xgboost/src/dmlc-core/src
-	cp ./LICENSE xgboost
-	cat R-package/src/Makevars|sed '2s/.*/PKGROOT=./' | sed '3s/.*/ENABLE_STD_THREAD=0/' > xgboost/src/Makevars
-	cp xgboost/src/Makevars xgboost/src/Makevars.win
+	rm -rf xgboostAMG xgboostAMG*.tar.gz
+	cp -r R-package xgboostAMG
+	rm -rf xgboostAMG/src/*.o xgboostAMG/src/*.so xgboostAMG/src/*.dll
+	rm -rf xgboostAMG/src/*/*.o
+	rm -rf xgboostAMG/demo/*.model xgboostAMG/demo/*.buffer xgboostAMG/demo/*.txt
+	rm -rf xgboostAMG/demo/runall.R
+	cp -r src xgboostAMG/src/src
+	cp -r include xgboostAMG/src/include
+	cp -r amalgamation xgboostAMG/src/amalgamation
+	mkdir -p xgboostAMG/src/rabit
+	cp -r rabit/include xgboostAMG/src/rabit/include
+	cp -r rabit/src xgboostAMG/src/rabit/src
+	rm -rf xgboostAMG/src/rabit/src/*.o
+	mkdir -p xgboostAMG/src/dmlc-core
+	cp -r dmlc-core/include xgboostAMG/src/dmlc-core/include
+	cp -r dmlc-core/src xgboostAMG/src/dmlc-core/src
+	cp ./LICENSE xgboostAMG
+	cat R-package/src/Makevars|sed '2s/.*/PKGROOT=./' | sed '3s/.*/ENABLE_STD_THREAD=0/' > xgboostAMG/src/Makevars
+	cp xgboostAMG/src/Makevars xgboostAMG/src/Makevars.win
 
 Rbuild:
 	$(MAKE) Rpack
-	R CMD build --no-build-vignettes xgboost
-	rm -rf xgboost
+	R CMD build --no-build-vignettes xgboostAMG
+	rm -rf xgboostAMG
 
 Rcheck:
 	$(MAKE) Rbuild
-	R CMD check  xgboost*.tar.gz
+	R CMD check  xgboostAMG*.tar.gz
 
 -include build/*.d
 -include build/*/*.d

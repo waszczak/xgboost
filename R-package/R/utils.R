@@ -3,10 +3,10 @@
 
 # depends on matrix
 .onLoad <- function(libname, pkgname) {
-  library.dynam("xgboost", pkgname, libname)
+  library.dynam("xgboostAMG", pkgname, libname)
 }
 .onUnload <- function(libpath) {
-  library.dynam.unload("xgboost", libpath)
+  library.dynam.unload("xgboostAMG", libpath)
 }
 
 
@@ -21,7 +21,7 @@ xgb.iter.boost <- function(booster, dtrain, gpair) {
   if (class(dtrain) != "xgb.DMatrix") {
     stop("xgb.iter.update: second argument must be type xgb.DMatrix")
   }
-  .Call("XGBoosterBoostOneIter_R", booster, dtrain, gpair$grad, gpair$hess, PACKAGE = "xgboost")
+  .Call("XGBoosterBoostOneIter_R", booster, dtrain, gpair$grad, gpair$hess, PACKAGE = "xgboostAMG")
   return(TRUE)
 }
 
@@ -36,7 +36,7 @@ xgb.iter.update <- function(booster, dtrain, iter, obj = NULL) {
 
   if (is.null(obj)) {
     .Call("XGBoosterUpdateOneIter_R", booster, as.integer(iter), dtrain,
-          PACKAGE = "xgboost")
+          PACKAGE = "xgboostAMG")
     } else {
     pred <- predict(booster, dtrain)
     gpair <- obj(pred, dtrain)
@@ -69,7 +69,7 @@ xgb.iter.eval <- function(booster, watchlist, iter, feval = NULL, prediction = F
         evnames <- append(evnames, names(w))
       }
       msg <- .Call("XGBoosterEvalOneIter_R", booster, as.integer(iter), watchlist,
-                   evnames, PACKAGE = "xgboost")
+                   evnames, PACKAGE = "xgboostAMG")
     } else {
       msg <- paste("[", iter, "]", sep="")
       for (j in 1:length(watchlist)) {

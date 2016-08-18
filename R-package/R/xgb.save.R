@@ -22,7 +22,7 @@ xgb.save <- function(model, fname) {
   }
   if (class(model) == "xgb.Booster") {
     model <- xgb.Booster.check(model)
-    .Call("XGBoosterSaveModel_R", model$handle, fname, PACKAGE = "xgboost")
+    .Call("XGBoosterSaveModel_R", model$handle, fname, PACKAGE = "xgboostAMG")
     return(TRUE)
   }
   stop("xgb.save: the input must be xgb.Booster. Use xgb.DMatrix.save to save

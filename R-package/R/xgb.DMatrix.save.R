@@ -18,7 +18,7 @@ xgb.DMatrix.save <- function(DMatrix, fname) {
   }
   if (class(DMatrix) == "xgb.DMatrix") {
     .Call("XGDMatrixSaveBinary_R", DMatrix, fname, as.integer(FALSE),
-          PACKAGE = "xgboost")
+          PACKAGE = "xgboostAMG")
     return(TRUE)
   }
   stop("xgb.DMatrix.save: the input must be xgb.DMatrix")

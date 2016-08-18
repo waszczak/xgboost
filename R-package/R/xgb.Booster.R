@@ -9,12 +9,12 @@ xgb.Booster <- function(params = list(), cachelist = list(), modelfile = NULL) {
       stop("xgb.Booster only accepts list of DMatrix as cachelist")
     }
   }
-  handle <- .Call("XGBoosterCreate_R", cachelist, PACKAGE = "xgboost")
+  handle <- .Call("XGBoosterCreate_R", cachelist, PACKAGE = "xgboostAMG")
   if (!is.null(modelfile)) {
     if (typeof(modelfile) == "character") {
-      .Call("XGBoosterLoadModel_R", handle, modelfile, PACKAGE = "xgboost")
+      .Call("XGBoosterLoadModel_R", handle, modelfile, PACKAGE = "xgboostAMG")
     } else if (typeof(modelfile) == "raw") {
-      .Call("XGBoosterLoadModelFromRaw_R", handle, modelfile, PACKAGE = "xgboost")
+      .Call("XGBoosterLoadModelFromRaw_R", handle, modelfile, PACKAGE = "xgboostAMG")
     } else {
       stop("modelfile must be character or raw vector")
     }
@@ -43,7 +43,7 @@ xgb.get.handle <- function(object) {
     xgb.Booster.handle = object,
     stop("argument must be of either xgb.Booster or xgb.Booster.handle class")
   )
-  if (is.null(handle) | .Call("XGCheckNullPtr_R", handle, PACKAGE="xgboost")) {
+  if (is.null(handle) | .Call("XGCheckNullPtr_R", handle, PACKAGE="xgboostAMG")) {
     stop("invalid xgb.Booster.handle")
   }
   handle
@@ -55,7 +55,7 @@ xgb.Booster.check <- function(bst, saveraw = TRUE)
 {
   isnull <- is.null(bst$handle)
   if (!isnull) {
-    isnull <- .Call("XGCheckNullPtr_R", bst$handle, PACKAGE="xgboost")
+    isnull <- .Call("XGCheckNullPtr_R", bst$handle, PACKAGE="xgboostAMG")
   }
   if (isnull) {
     bst$handle <- xgb.Booster(modelfile = bst$raw)
@@ -131,7 +131,7 @@ predict.xgb.Booster <- function(object, newdata, missing = NA,
     option <- option + 2
   }
   ret <- .Call("XGBoosterPredict_R", object$handle, newdata, as.integer(option),
-               as.integer(ntreelimit), PACKAGE = "xgboost")
+               as.integer(ntreelimit), PACKAGE = "xgboostAMG")
   if (predleaf){
       len <- getinfo(newdata, "nrow")
       if (length(ret) == len){
@@ -221,7 +221,7 @@ predict.xgb.Booster.handle <- function(object, ...) {
 xgb.attr <- function(object, name) {
   if (is.null(name) || nchar(as.character(name[1])) == 0) stop("invalid attribute name")
   handle <- xgb.get.handle(object)
-  .Call("XGBoosterGetAttr_R", handle, as.character(name[1]), PACKAGE="xgboost")
+  .Call("XGBoosterGetAttr_R", handle, as.character(name[1]), PACKAGE="xgboostAMG")
 }
 
 #' @rdname xgb.attr
@@ -234,7 +234,7 @@ xgb.attr <- function(object, name) {
     # Q: should we warn user about non-scalar elements?
     value <- as.character(value[1])
   }
-  .Call("XGBoosterSetAttr_R", handle, as.character(name[1]), value, PACKAGE="xgboost")
+  .Call("XGBoosterSetAttr_R", handle, as.character(name[1]), value, PACKAGE="xgboostAMG")
   if (is(object, 'xgb.Booster') && !is.null(object$raw)) {
     object$raw <- xgb.save.raw(object$handle)
   }
@@ -245,10 +245,10 @@ xgb.attr <- function(object, name) {
 #' @export
 xgb.attributes <- function(object) {
   handle <- xgb.get.handle(object)
-  attr_names <- .Call("XGBoosterGetAttrNames_R", handle, PACKAGE="xgboost")
+  attr_names <- .Call("XGBoosterGetAttrNames_R", handle, PACKAGE="xgboostAMG")
   if (is.null(attr_names)) return(NULL)
   res <- lapply(attr_names, function(x) {
-    .Call("XGBoosterGetAttr_R", handle, x, PACKAGE="xgboost")
+    .Call("XGBoosterGetAttr_R", handle, x, PACKAGE="xgboostAMG")
   })
   names(res) <- attr_names
   res
@@ -269,7 +269,7 @@ xgb.attributes <- function(object) {
   })
   handle <- xgb.get.handle(object)
   for (i in seq_along(a)) {
-    .Call("XGBoosterSetAttr_R", handle, names(a[i]), a[[i]], PACKAGE="xgboost")
+    .Call("XGBoosterSetAttr_R", handle, names(a[i]), a[[i]], PACKAGE="xgboostAMG")
   }
   if (is(object, 'xgb.Booster') && !is.null(object$raw)) {
     object$raw <- xgb.save.raw(object$handle)
@@ -310,7 +310,7 @@ xgb.attributes <- function(object) {
   p <- lapply(p, function(x) as.character(x)[1])
   handle <- xgb.get.handle(object)
   for (i in seq_along(p)) {
-    .Call("XGBoosterSetParam_R", handle, names(p[i]), p[[i]], PACKAGE = "xgboost")
+    .Call("XGBoosterSetParam_R", handle, names(p[i]), p[[i]], PACKAGE = "xgboostAMG")
   }
   if (is(object, 'xgb.Booster') && !is.null(object$raw)) {
     object$raw <- xgb.save.raw(object$handle)

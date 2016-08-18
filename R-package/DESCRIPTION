@@ -1,4 +1,4 @@
-Package: xgboost
+Package: xgboostAMG
 Type: Package
 Title: Extreme Gradient Boosting
 Version: 0.4-3
